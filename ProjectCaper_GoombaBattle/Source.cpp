@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -16,9 +17,23 @@ int defense = 0;
 
 	// General
 int choice;
+int defendChance = rand() %4;
+
+void defend() {
+  if(defendChance == 3) {
+    cout << "Mario defends goomba's attack. Mario takes " << enemyAttack - (defense+1) << " damage." << endl;
+
+    health = health - (enemyAttack - (defense + 1));
+  } else {
+		health = health - (enemyAttack - defense);
+  }
+}
 
 int main() {
 	while (enemyHealth > 0) {
+    // SetUp defend() random
+    defendChance = rand() %4;
+
 		cout <<
 			health << "/10 health remaining" << endl <<
 			"1. Jump" << endl <<
@@ -29,13 +44,16 @@ int main() {
 		switch (choice) {
 		case 1:
 			cout << "Mario attacks Goomba for " << jumpAttack - enemyDefense << ". Goomba attacks Mario for " << enemyAttack - defense << ".\n";
-			enemyHealth = enemyHealth - (jumpAttack - enemyDefense);
-			health = health - (enemyAttack - defense);
+
+      defend();
+      enemyHealth = enemyHealth - (jumpAttack - enemyDefense);
+			
 			break;
 		case 2:
 			cout << "Mario attacks Goomba for " << hammerAttack - enemyDefense << ". Goomba attacks Mario for " << enemyAttack - defense << ".\n";
-			enemyHealth = enemyHealth - (hammerAttack - enemyDefense);
-			health = health - (enemyAttack - defense);
+      defend();
+      enemyHealth = enemyHealth - (hammerAttack - enemyDefense);
+
 			break;
 		case 3:
 			health = health + 5;
@@ -45,7 +63,8 @@ int main() {
 			cout << "Mario uses item and heals for 5 health. Mario now has " << health << "/10 health.\n";
 			
 			cout << "Goomba attacks Mario for " << enemyAttack - defense << ".\n";
-			health = health - (enemyAttack - defense);
+			defend();
+
 			break;
 		default:
 			cout << "Invalid choice." << endl;
